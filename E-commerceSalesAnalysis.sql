@@ -178,3 +178,56 @@ ON p.product_id = oi.product_id
 Group by p.category
 order by revenue DESC
 LIMIT 1;
+-- orders placed in last 7 days
+
+select count(order_id) as recent_order
+FROM orders
+WHERE order_date >= curdate()-interval 7 DAY;
+
+-- avergae order values
+
+select avg(total_amount) as average_order_value
+FROM orders;
+
+-- customers who bought same product more than once
+
+select c.customer_name,P.product_name,count(*) as purchase_count
+FROM customer as c
+JOIN orders as o On c.customer_id = o.order_id
+JOIN products AS p On p.product_id = o.order_id
+JOIN order_items as oi ON o.order_id = oi.order_id
+GROUP BY c.customer_name,p.product_name;
+
+-- high spending customers sepnding>5000
+
+select c.customer_name, sum(o.total_amount) as total_spending
+FROM customer as c
+JOIN orders as o
+ON c.customer_id = o.customer_id
+group by c.customer_id
+having total_spending >500.00;
+
+-- out of stock products
+select product_name
+FROM products
+WHERE product_id NOT IN (select DISTINCT product_id from order_items);
+
+-- total orders from each city 
+select c.city,c.customer_id, count(o.order_id) as total_orders
+FROM customer as c
+join orders as o ON c.customer_id = o.customer_id
+GROUP BY city,c.customer_id;
+
+-- average revenue per product category
+select p.category, avg(oi.quaantity*oi.price) as avg_revenue
+FROM products as p
+JOIN order_items as oi
+ON p.product_id = oi.product_id
+group by p.category;
+
+-- total revenue per year
+
+select c.customer_name , YEAR(o.order_date) as year, sum(o.total_amount) as total_revenue
+FROM customer as c
+JOIN orders as o ON c.customer_id = o.customer_id
+GROUP BY c.customer_name,year;
