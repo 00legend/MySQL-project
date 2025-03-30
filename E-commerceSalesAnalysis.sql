@@ -149,3 +149,32 @@ FROM orders
 Group by year,month
 order by year,month;
 
+
+-- most profitable month
+
+select MONTH(order_date) as month,
+       sum(total_amonunt) as revenue
+FROM orders
+Group by month
+order by revenue DESC
+LIMIT 1;
+
+
+-- total revenue by product-category
+
+select p.product_name,p.category, sum(oi.quaantity * oi.price) as revenue
+FROM product as p
+join order_items as oi
+ON p.product_id = oi.product_id
+GROUP by p.category
+Order by revenue DESC;
+
+-- highest revenue generating category
+
+select p.product_name,p.category  , sum(oi.quaantity * oi.price) as revenue
+FROM product as p
+JOIN order_items as oi
+ON p.product_id = oi.product_id
+Group by p.category
+order by revenue DESC
+LIMIT 1;
