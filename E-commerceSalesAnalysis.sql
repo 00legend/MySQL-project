@@ -149,7 +149,6 @@ FROM orders
 Group by year,month
 order by year,month;
 
-
 -- most profitable month
 
 select MONTH(order_date) as month,
@@ -171,13 +170,14 @@ Order by revenue DESC;
 
 -- highest revenue generating category
 
-select p.product_name,p.category  , sum(oi.quaantity * oi.price) as revenue
-FROM product as p
+select p.product_name ,p.category, sum(oi.quaantity * oi.price) as revenue
+from products AS p
 JOIN order_items as oi
 ON p.product_id = oi.product_id
-Group by p.category
-order by revenue DESC
-LIMIT 1;
+GROUP BY p.product_name,p.category
+order by revenue desc
+limit 1;
+
 -- orders placed in last 7 days
 
 select count(order_id) as recent_order

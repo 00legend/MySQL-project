@@ -90,4 +90,45 @@ WHEN employee_id=3 THEN 70000.00
 END
 WHERE employee_id IN (1,2,3);
 
+create table project(
+project_id INT PRIMARY KEY auto_increment,
+project_name VARCHAR(50),
+start_date date,
+end_date date
+);
+
+create table employee_project(
+employee_Project_id INT PRIMARY KEY auto_increment,
+employee_id INT,
+project_id Int,
+role VARCHAR(50),
+foreign key (employee_id) REFERENCES employee(employee_id),
+foreign key (project_id) REFERENCES project(project_id)
+);
+
+insert into project(project_name,start_date,end_date)
+values('Inventory Management System', '2023-01-15', '2023-08-30'),
+('E-commerce Website', '2022-05-01', '2023-04-15'),
+('HR Management System', '2021-09-10', '2022-12-20'),
+('Customer Support Portal', '2024-02-01', '2024-11-30'),
+('Financial Dashboard', '2023-07-20', '2024-03-10');
+
+insert into employee_project(employee_id,project_id,role) 
+values (1, 1, 'Developer'),
+(2, 2, 'Tester'),
+(3, 3, 'Project Manager'),
+(4, 1, 'Designer'),
+(5, 4, 'Support Engineer'),
+(6, 2, 'Developer'),
+(7, 3, 'Analyst'),
+(8, 5, 'Finance Expert'),
+(9, 4, 'Support Engineer'),
+(10, 5, 'Analyst');
+
+select e.employee_id,project_id,e.employee_name,p.project_name,ep.role
+FROM employee as e 
+JOIN employee_project as ep 
+ON ep.employee_id=e.employee_id
+join project as p 
+ON ep.project_id=p.project_id;
 

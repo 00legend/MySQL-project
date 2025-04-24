@@ -106,7 +106,7 @@ LIMIT 3;
 -- Calculate the percentage contribution of each pizza type to total revenue.
 
 select pt.name , sum(od.quantity * p.price) as revenue,
-                 (select (SUM(od2.quantity * p.price) / SUM(od.quantity * p.price)) * 100 ) as total_percentage
+                 (select (SUM(od2departmentcustomertaskcustomer.quantity * p.price) / SUM(od.quantity * p.price)) * 100 ) as total_percentage
 FROM pizzas as p 
 JOIN pizza_types as pt ON p.pizza_type_id = pt.pizza_type_id
 JOIN order_details as od ON p.pizza_id = p.pizza_id
